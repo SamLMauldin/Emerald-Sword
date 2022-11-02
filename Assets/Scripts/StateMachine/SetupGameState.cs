@@ -17,7 +17,7 @@ public class SetupGameState : GameState
         if(_activated == false)
         {
             _activated = true;
-            StateMachine.ChangeState<PlayerTurnGameState>();
+            StateMachine.ChangeState<PlayerMovement>();
         }
     }
     public override void Exit()

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : GameState
 {
     [SerializeField] CharacterController _controller;
 
@@ -12,12 +12,33 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 _velocity;
 
-    // Update is called once per frame
-    void Update()
+    public bool _triggerBattle = false;
+    public bool _activated = false;
+
+    public override void Enter()
     {
-        PlayerMove();
+        _activated = true;
+        Debug.Log("You can Walk!");
+    }
+    private void Update()
+    {
+        if (_activated)
+        {
+            PlayerMove();
+            if (_triggerBattle)
+            {
+                Debug.Log("should Work");
+                StateMachine.ChangeState<PlayerTurnGameState>();
+            }
+        }
     }
 
+    public override void Exit()
+    {
+        _triggerBattle = false;
+        _activated = false;
+        Debug.Log("GoodBye!");
+    }
     private void PlayerMove()
     {
         float x = Input.GetAxis("Horizontal");
