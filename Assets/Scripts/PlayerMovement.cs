@@ -8,7 +8,7 @@ public class PlayerMovement : GameState
 
     [SerializeField] float speed = 10f;
 
-    [SerializeField] MouseLook _mouse = null;
+    public bool _canLook = true;
 
     Vector3 _velocity;
 
@@ -37,6 +37,7 @@ public class PlayerMovement : GameState
     {
         _triggerBattle = false;
         _activated = false;
+        _canLook = false;
         Debug.Log("GoodBye!");
     }
     private void PlayerMove()

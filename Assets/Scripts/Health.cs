@@ -2,17 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Health : MonoBehaviour
+public class Health : MonoBehaviour, IDamageable
 {
-    // Start is called before the first frame update
+    [SerializeField] public int _maxHealth = 100;
+    [SerializeField] public int _currentHealth = 100;
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if(_currentHealth <= 0)
+        {
+            Kill();
+        }
+    }
+
+    public void Kill()
+    {
+
+    }
+
+    public void TakeDamage(int damage)
+    {
+        _currentHealth -= damage;
     }
 }
