@@ -8,6 +8,7 @@ public class PlayerTurnGameState : GameState
     [SerializeField] Text _playerTurnTextUI = null;
 
     [SerializeField] Health _enemy;
+    [SerializeField] Health _player;
 
     private int _damage = 10;
     private bool _charged = false;
@@ -22,6 +23,10 @@ public class PlayerTurnGameState : GameState
 
         _playerTurnCount++;
         _playerTurnTextUI.text = "Player Turn: " + _playerTurnCount.ToString();
+        if (_defend)
+        {
+            _defend = false;
+        }
         //hook into events 
         StateMachine.Input.PressedConfirm += OnPressedConfirm;
     }
@@ -38,6 +43,15 @@ public class PlayerTurnGameState : GameState
         }
         if (Input.GetKeyDown(KeyCode.Z)){
             ChargeAttack();
+        }
+
+        if (_enemy._enemyDied)
+        {
+            StateMachine.ChangeState<WinState>();
+        }
+        if (_player._playerDied)
+        {
+            StateMachine.ChangeState<LoseState>();
         }
     }
 
@@ -78,7 +92,7 @@ public class PlayerTurnGameState : GameState
         if (!_charged)
         {
             Debug.Log("Charged");
-            _damage = _damage * 2;
+            _damage = _damage * 3;
             _charged = true;
             StateMachine.ChangeState<EnemyTurnGameState>();
         }

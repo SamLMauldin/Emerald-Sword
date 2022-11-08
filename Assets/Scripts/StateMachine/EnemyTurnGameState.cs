@@ -14,7 +14,7 @@ public class EnemyTurnGameState : GameState
     [SerializeField] int[] _enemyAttacks;
 
     [SerializeField] Health _player;
-      
+    [SerializeField] PlayerTurnGameState _playerDefended;  
 
     public override void Enter()
     {
@@ -56,13 +56,27 @@ public class EnemyTurnGameState : GameState
     private void EnemyAttack1(int damage)
     {
         Debug.Log("EnemyAttack1");
-        _player.TakeDamage(damage);
+        if (_playerDefended._defend)
+        {
+            _player.TakeDamage(damage / 3);
+        }
+        else
+        {
+            _player.TakeDamage(damage);
+        }
 
     }
 
     private void EnemyAttack2(int damage)
     {
         Debug.Log("EnemyAttack2");
-        _player.TakeDamage(damage);
+        if (_playerDefended._defend)
+        {
+            _player.TakeDamage(damage / 3);
+        }
+        else
+        {
+            _player.TakeDamage(damage);
+        };
     }
 }
