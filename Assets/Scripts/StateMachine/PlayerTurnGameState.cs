@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerTurnGameState : GameState
 {
     [SerializeField] Text _playerTurnTextUI = null;
+    [SerializeField] Text _playerAttacksUI = null;
 
     [SerializeField] Health _enemy;
     [SerializeField] Health _player;
@@ -20,6 +21,7 @@ public class PlayerTurnGameState : GameState
     {
         Debug.Log("Player Turn: ...Entering");
         _playerTurnTextUI.gameObject.SetActive(true);
+        _playerAttacksUI.gameObject.SetActive(true);
 
         _playerTurnCount++;
         _playerTurnTextUI.text = "Player Turn: " + _playerTurnCount.ToString();
@@ -57,7 +59,8 @@ public class PlayerTurnGameState : GameState
 
     public override void Exit()
     {
-        _playerTurnTextUI.gameObject.SetActive(false);
+        _playerTurnTextUI.gameObject.SetActive(true);
+        _playerAttacksUI.gameObject.SetActive(true);
         //unhook from events
         StateMachine.Input.PressedConfirm -= OnPressedConfirm;
         Debug.Log("Player Turn: Exiting...");

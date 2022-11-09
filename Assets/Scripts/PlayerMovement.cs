@@ -18,6 +18,7 @@ public class PlayerMovement : GameState
     public override void Enter()
     {
         _activated = true;
+        _canLook = true;
         Debug.Log("You can Walk!");
     }
     private void Update()

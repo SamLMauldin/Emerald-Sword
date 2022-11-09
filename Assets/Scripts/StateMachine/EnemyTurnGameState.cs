@@ -14,14 +14,32 @@ public class EnemyTurnGameState : GameState
     [SerializeField] int[] _enemyAttacks;
 
     [SerializeField] Health _player;
-    [SerializeField] PlayerTurnGameState _playerDefended;  
+    [SerializeField] PlayerTurnGameState _playerDefended;
 
+    [SerializeField] Health _enemyHealth;
+    [SerializeField] Health _playerHealth;
+
+    [SerializeField] ParticleSystem _attackParticles1;
+    [SerializeField] ParticleSystem _attackParticles2;
     public override void Enter()
     {
         Debug.Log("Enemy Turn: ...Enter");
         EnemyTurnBegan?.Invoke();
 
         StartCoroutine(EnemyThinkingRoutine(_pauseDuration));
+    }
+
+    public override void Tick()
+    {
+        base.Tick();
+        if (_enemyHealth._enemyDied)
+        {
+            StateMachine.ChangeState<WinState>();
+        }
+        if (_playerHealth._playerDied)
+        {
+            StateMachine.ChangeState<LoseState>();
+        }
     }
 
     public override void Exit()
@@ -64,6 +82,7 @@ public class EnemyTurnGameState : GameState
         {
             _player.TakeDamage(damage);
         }
+        FeedbackParticles1();
 
     }
 
@@ -77,6 +96,24 @@ public class EnemyTurnGameState : GameState
         else
         {
             _player.TakeDamage(damage);
-        };
+        }
+        FeedbackParticles2();
+    }
+    private void FeedbackParticles1()
+    {
+        //particles 
+        if (_attackParticles1 != null)
+        {
+            _attackParticles1 = Instantiate(_attackParticles1, transform.position, Quaternion.identity);
+        }
+    }
+
+    private void FeedbackParticles2()
+    {
+        //particles 
+        if (_attackParticles2 != null)
+        {
+            _attackParticles2 = Instantiate(_attackParticles2, transform.position, Quaternion.identity);
+        }
     }
 }
