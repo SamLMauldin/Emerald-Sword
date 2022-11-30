@@ -11,6 +11,10 @@ public class PlayerTurnGameState : GameState
     [SerializeField] Health _enemy;
     [SerializeField] Health _player;
 
+    [SerializeField] AudioClip _attackSFX;
+    [SerializeField] AudioClip _defendSFX;
+    [SerializeField] AudioClip _chargeSFX;
+
     private int _damage = 10;
     private bool _charged = false;
     private int _playerTurnCount = 0;
@@ -74,6 +78,7 @@ public class PlayerTurnGameState : GameState
     private void BasicAttack()
     {
         Debug.Log("EnemyAttacked");
+        BasicAttackFeedback();
         _enemy.TakeDamage(_damage);
         if (_charged)
         {
@@ -86,6 +91,7 @@ public class PlayerTurnGameState : GameState
     private void Defend()
     {
         Debug.Log("Defend");
+        DefendFeedback();
         _defend = true;
         StateMachine.ChangeState<EnemyTurnGameState>();
     }
@@ -95,6 +101,7 @@ public class PlayerTurnGameState : GameState
         if (!_charged)
         {
             Debug.Log("Charged");
+            ChargeFeedback();
             _damage = _damage * 3;
             _charged = true;
             StateMachine.ChangeState<EnemyTurnGameState>();
@@ -102,6 +109,32 @@ public class PlayerTurnGameState : GameState
         else
         {
             Debug.Log("You are already charged");
+        }
+    }
+    private void BasicAttackFeedback()
+    {
+        //audio. TODO - consider Object Pooling for performance
+        if (_attackSFX != null)
+        {
+            AudioHelper.PlayClip2D(_attackSFX, 1f);
+        }
+    }
+
+    private void DefendFeedback()
+    {
+        //audio. TODO - consider Object Pooling for performance
+        if (_defendSFX != null)
+        {
+            AudioHelper.PlayClip2D(_defendSFX, 1f);
+        }
+    }
+
+    private void ChargeFeedback()
+    {
+        //audio. TODO - consider Object Pooling for performance
+        if (_chargeSFX != null)
+        {
+            AudioHelper.PlayClip2D(_chargeSFX, 1f);
         }
     }
 }

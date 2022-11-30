@@ -774,6 +774,9 @@ MonoBehaviour:
   _playerAttacksUI: {fileID: 371791811}
   _enemy: {fileID: 960499432}
   _player: {fileID: 1864087530}
+  _attackSFX: {fileID: 8300000, guid: 8aca977d6fc82464e80328c5de6dc27a, type: 3}
+  _defendSFX: {fileID: 8300000, guid: e790978f0028b1a48935ba44b70565e0, type: 3}
+  _chargeSFX: {fileID: 8300000, guid: 75bd3fae287578a4e8c69de9594f0e8f, type: 3}
   _defend: 0
 --- !u!114 &379867150
 MonoBehaviour:
@@ -807,6 +810,8 @@ MonoBehaviour:
   _playerHealth: {fileID: 1864087530}
   _attackParticles1: {fileID: 3022224517521489539, guid: cf748314f46ec824c8a44bbf9a78fc28, type: 3}
   _attackParticles2: {fileID: 2851958576899963198, guid: 89c83b14b9cc6f44ba05204048ea3746, type: 3}
+  _attack1SFX: {fileID: 8300000, guid: ebc03e426e37a124caf2211b28742325, type: 3}
+  _attack2SFX: {fileID: 8300000, guid: 076bc336c76110a42995a7b47f82a7cb, type: 3}
 --- !u!114 &379867152
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -852,6 +857,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _winText: {fileID: 125420476}
   _winPanel: {fileID: 689643650}
+  _winSound: {fileID: 0}
 --- !u!114 &379867156
 MonoBehaviour:
   m_ObjectHideFlags: 0

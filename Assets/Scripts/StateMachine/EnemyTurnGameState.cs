@@ -21,6 +21,9 @@ public class EnemyTurnGameState : GameState
 
     [SerializeField] ParticleSystem _attackParticles1;
     [SerializeField] ParticleSystem _attackParticles2;
+
+    [SerializeField] AudioClip _attack1SFX;
+    [SerializeField] AudioClip _attack2SFX;
     public override void Enter()
     {
         Debug.Log("Enemy Turn: ...Enter");
@@ -82,7 +85,7 @@ public class EnemyTurnGameState : GameState
         {
             _player.TakeDamage(damage);
         }
-        FeedbackParticles1();
+        FeedBackAttack1();
 
     }
 
@@ -97,23 +100,33 @@ public class EnemyTurnGameState : GameState
         {
             _player.TakeDamage(damage);
         }
-        FeedbackParticles2();
+        FeedBackAttack2();
     }
-    private void FeedbackParticles1()
+    private void FeedBackAttack1()
     {
         //particles 
         if (_attackParticles1 != null)
         {
             _attackParticles1 = Instantiate(_attackParticles1, transform.position, Quaternion.identity);
         }
+        //audio. TODO - consider Object Pooling for performance
+        if (_attack1SFX != null)
+        {
+            AudioHelper.PlayClip2D(_attack1SFX, 1f);
+        }
     }
 
-    private void FeedbackParticles2()
+    private void FeedBackAttack2()
     {
         //particles 
         if (_attackParticles2 != null)
         {
             _attackParticles2 = Instantiate(_attackParticles2, transform.position, Quaternion.identity);
+        }
+        //audio. TODO - consider Object Pooling for performance
+        if (_attack2SFX != null)
+        {
+            AudioHelper.PlayClip2D(_attack2SFX, 1f);
         }
     }
 }
