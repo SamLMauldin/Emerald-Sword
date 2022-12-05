@@ -8,6 +8,7 @@ public class WinState : GameState
     [SerializeField] GameObject _winText;
     [SerializeField] GameObject _winPanel;
     [SerializeField] AudioClip _winSound;
+
     public override void Enter()
     {
         base.Enter();
@@ -29,7 +30,7 @@ public class WinState : GameState
 
     public override void Exit()
     {
-        ReloadLevel();
+        SceneManager.LoadScene("MainMenu");
         base.Exit();
         StateMachine.Input.PressedConfirm -= OnPressedConfirm;
     }

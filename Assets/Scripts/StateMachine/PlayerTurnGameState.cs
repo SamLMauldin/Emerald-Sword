@@ -14,19 +14,21 @@ public class PlayerTurnGameState : GameState
     [SerializeField] AudioClip _attackSFX;
     [SerializeField] AudioClip _defendSFX;
     [SerializeField] AudioClip _chargeSFX;
+    [SerializeField] AudioClip _cantChargeSFX;
 
     private int _damage = 10;
     private bool _charged = false;
     private int _playerTurnCount = 0;
 
     public bool _defend = false;
-
+    [SerializeField] private Animator _sword = null;
+    [SerializeField] private Animator _playerAttUI = null;
     public override void Enter()
     {
         Debug.Log("Player Turn: ...Entering");
         _playerTurnTextUI.gameObject.SetActive(true);
         _playerAttacksUI.gameObject.SetActive(true);
-
+        _playerAttUI.Play("AttackTextIntro", 0, 0.0f);
         _playerTurnCount++;
         _playerTurnTextUI.text = "Player Turn: " + _playerTurnCount.ToString();
         if (_defend)
@@ -51,10 +53,6 @@ public class PlayerTurnGameState : GameState
             ChargeAttack();
         }
 
-        if (_enemy._enemyDied)
-        {
-            StateMachine.ChangeState<WinState>();
-        }
         if (_player._playerDied)
         {
             StateMachine.ChangeState<LoseState>();
@@ -63,8 +61,8 @@ public class PlayerTurnGameState : GameState
 
     public override void Exit()
     {
-        _playerTurnTextUI.gameObject.SetActive(true);
-        _playerAttacksUI.gameObject.SetActive(true);
+        _playerTurnTextUI.gameObject.SetActive(false);
+        _playerAttacksUI.gameObject.SetActive(false);
         //unhook from events
         StateMachine.Input.PressedConfirm -= OnPressedConfirm;
         Debug.Log("Player Turn: Exiting...");
@@ -72,6 +70,7 @@ public class PlayerTurnGameState : GameState
 
     void OnPressedConfirm()
     {
+        _playerAttUI.Play("AttackTextOutro", 0, 0.0f);
         StateMachine.ChangeState<EnemyTurnGameState>();
     }
 
@@ -79,6 +78,7 @@ public class PlayerTurnGameState : GameState
     {
         Debug.Log("EnemyAttacked");
         BasicAttackFeedback();
+        _sword.Play("SwordAttack", 0, 0.0f);
         _enemy.TakeDamage(_damage);
         if (_charged)
         {
@@ -92,6 +92,7 @@ public class PlayerTurnGameState : GameState
     {
         Debug.Log("Defend");
         DefendFeedback();
+        _sword.Play("SwordDefend", 0, 0.0f);
         _defend = true;
         StateMachine.ChangeState<EnemyTurnGameState>();
     }
@@ -102,6 +103,7 @@ public class PlayerTurnGameState : GameState
         {
             Debug.Log("Charged");
             ChargeFeedback();
+            _sword.Play("SwordCharge", 0, 0.0f);
             _damage = _damage * 3;
             _charged = true;
             StateMachine.ChangeState<EnemyTurnGameState>();
@@ -109,6 +111,7 @@ public class PlayerTurnGameState : GameState
         else
         {
             Debug.Log("You are already charged");
+            CantChargeFeedback();
         }
     }
     private void BasicAttackFeedback()
@@ -135,6 +138,14 @@ public class PlayerTurnGameState : GameState
         if (_chargeSFX != null)
         {
             AudioHelper.PlayClip2D(_chargeSFX, 1f);
+        }
+    }
+
+    private void CantChargeFeedback()
+    {
+        if (_cantChargeSFX != null)
+        {
+            AudioHelper.PlayClip2D(_cantChargeSFX, 1f);
         }
     }
 }

@@ -10,12 +10,20 @@ public class Health : MonoBehaviour, IDamageable
     [SerializeField] HealthBar _healthBar;
     public bool _playerDied = false;
     public bool _enemyDied = false;
+
+    [SerializeField] GameObject _damagedPanel = null;
+
     void Start()
     {
         _currentHealth = _maxHealth;
         if (_healthBar != null)
         {
             _healthBar.SetMaxHealth(_maxHealth);
+        }
+
+        if (_damagedPanel != null)
+        {
+            _damagedPanel.SetActive(false);
         }
     }
 
@@ -46,5 +54,21 @@ public class Health : MonoBehaviour, IDamageable
         {
             _healthBar.SetHealth(_currentHealth);
         }
+        if (_currentHealth <= 0)
+        {
+            Kill();
+        }
+        if (_damagedPanel != null)
+        {
+            StartCoroutine(DamagePanel());
+        }
     }
+
+    IEnumerator DamagePanel()
+    {
+        _damagedPanel.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        _damagedPanel.SetActive(false);
+    }
+
 }

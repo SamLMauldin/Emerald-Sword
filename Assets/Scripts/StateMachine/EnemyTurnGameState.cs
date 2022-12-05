@@ -24,12 +24,23 @@ public class EnemyTurnGameState : GameState
 
     [SerializeField] AudioClip _attack1SFX;
     [SerializeField] AudioClip _attack2SFX;
+
+    private int _enemyTurn = 0;
     public override void Enter()
     {
         Debug.Log("Enemy Turn: ...Enter");
-        EnemyTurnBegan?.Invoke();
+        _enemyTurn++;
+        if (_enemyHealth._enemyDied)
+        {
+            Debug.Log(_enemyHealth._enemyDied);
+        }
+        else
+        {
+            Debug.Log(_enemyHealth._enemyDied);
+            EnemyTurnBegan?.Invoke();
 
-        StartCoroutine(EnemyThinkingRoutine(_pauseDuration));
+            StartCoroutine(EnemyThinkingRoutine(_pauseDuration));
+        }
     }
 
     public override void Tick()
@@ -38,10 +49,6 @@ public class EnemyTurnGameState : GameState
         if (_enemyHealth._enemyDied)
         {
             StateMachine.ChangeState<WinState>();
-        }
-        if (_playerHealth._playerDied)
-        {
-            StateMachine.ChangeState<LoseState>();
         }
     }
 
@@ -63,14 +70,21 @@ public class EnemyTurnGameState : GameState
     }
     private void ChooseEnemyAttack()
     {
-        int _attack = Random.Range(0, _enemyAttacks.Length);
-        if(_attack == 0)
+        if (_enemyTurn % 2 == 0)
         {
             EnemyAttack1(10);
         }
-        else if(_attack == 1)
+        else
         {
-            EnemyAttack2(20);
+            int _attack = Random.Range(0, _enemyAttacks.Length);
+            if (_attack == 0)
+            {
+                EnemyAttack1(10);
+            }
+            else if (_attack == 1)
+            {
+                EnemyAttack2(20);
+            }
         }
     }
 

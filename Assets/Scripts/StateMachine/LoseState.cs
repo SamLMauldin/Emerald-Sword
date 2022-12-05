@@ -7,12 +7,14 @@ public class LoseState : GameState
 {
     [SerializeField] GameObject _loseText;
     [SerializeField] GameObject _losePanel;
+    [SerializeField] AudioClip _loseSound;
     public override void Enter()
     {
         base.Enter();
         _loseText.SetActive(true);
         _losePanel.SetActive(true);
         StateMachine.Input.PressedConfirm += OnPressedConfirm;
+        AudioFeedback();
     }
 
     public override void Tick()
@@ -41,5 +43,14 @@ public class LoseState : GameState
     {
         int activeSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(activeSceneIndex);
+    }
+
+    private void AudioFeedback()
+    {
+        //audio. TODO - consider Object Pooling for performance
+        if (_loseSound != null)
+        {
+            AudioHelper.PlayClip2D(_loseSound, 1f);
+        }
     }
 }
