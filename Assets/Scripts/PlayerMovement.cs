@@ -28,7 +28,6 @@ public class PlayerMovement : GameState
             PlayerMove();
             if (_triggerBattle)
             {
-                Debug.Log("should Work");
                 StateMachine.ChangeState<PlayerTurnGameState>();
             }
         }
